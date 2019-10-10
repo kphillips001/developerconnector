@@ -4,27 +4,50 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { createProfile, getCurrentProfile } from "../../actions/profile";
 
-const Createprofile = ({
+const EditProfile = ({
   profile: { profile, loading },
   createProfile,
   getCurrentProfile,
   history
 }) => {
   const [formData, setFormData] = useState({
-    company: "",
-    website: "",
-    location: "",
-    status: "",
-    skills: "",
-    githubusername: "",
-    bio: "",
-    twitter: "",
-    facebook: "",
-    linkedin: "",
-    youtube: "",
-    instagram: ""
+    company: '',
+    website: '',
+    location: '',
+    status: '',
+    skills: '',
+    githubusername: '',
+    bio: '',
+    twitter: '',
+    facebook: '',
+    linkedin: '',
+    youtube: '',
+    instagram: ''
   });
+
   const [displaySocialInputs, toggleSocialInputs] = useState(false);
+
+  useEffect(() => {
+    getCurrentProfile();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+
+    setFormData({
+      company: loading || !profile.company ? '' : profile.company,
+      website: loading || !profile.website ? '' : profile.website,
+      location: loading || !profile.location ? '' : profile.location,
+      status: loading || !profile.status ? '' : profile.status,
+      skills: loading || !profile.skills ? '' : profile.skills.join(','),
+      githubusername:
+        loading || !profile.githubusername ? '' : profile.githubusername,
+      bio: loading || !profile.bio ? '' : profile.bio,
+      twitter: loading || !profile.social ? '' : profile.social.twitter,
+      facebook: loading || !profile.social ? '' : profile.social.facebook,
+      linkedin: loading || !profile.social ? '' : profile.social.linkedin,
+      youtube: loading || !profile.social ? '' : profile.social.youtube,
+      instagram: loading || !profile.social ? '' : profile.social.instagram
+    });
+  }, [loading, getCurrentProfile]);
+
   const {
     company,
     website,
@@ -43,7 +66,7 @@ const Createprofile = ({
     setFormData({ ...formData, [e.target.name]: e.target.value });
   const onSubmit = e => {
     e.preventDefault();
-    createProfile(formData, history);
+    createProfile(formData, history, true );
   };
   useEffect(() => {
     getCurrentProfile();
@@ -218,7 +241,7 @@ const Createprofile = ({
     </Fragment>
   );
 };
-Createprofile.propTypes = {
+EditProfile.propTypes = {
   createProfile: PropTypes.func.isRequired,
   getCurrentProfile: PropTypes.func.isRequired,
   profile: PropTypes.object.isRequired
@@ -229,4 +252,4 @@ const mapStateToProps = state => ({
 export default connect(
   mapStateToProps,
   { createProfile, getCurrentProfile },
-)(withRouter(Createprofile));
+)(withRouter(EditProfile));
