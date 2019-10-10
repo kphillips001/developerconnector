@@ -1,10 +1,10 @@
-import React, { useState, useEffect, Fragment } from "react";
+import React, { useEffect, useState, Fragment } from "react";
 import { Link, withRouter, Redirect } from "react-router-dom";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { getCurrentProfile } from "../../actions/profile";
+import { createProfile, getCurrentProfile } from "../../actions/profile";
 
-const CreateProfile = ({
+const Createprofile = ({
   createProfile,
   getCurrentProfile,
   profile: { profile, loading },
@@ -39,15 +39,12 @@ const CreateProfile = ({
     youtube,
     instagram,
   } = formData;
-
   const onChange = e =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
-  
   const onSubmit = e => {
-     e.preventDefault();
-     createProfile(formData, history);
-    }
-  
+    e.preventDefault();
+    createProfile(formData, history);
+  };
   useEffect(() => {
     getCurrentProfile();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -219,10 +216,9 @@ const CreateProfile = ({
         </Link>
       </form>
     </Fragment>
-          
   );
 };
-CreateProfile.propTypes = {
+Createprofile.propTypes = {
   createProfile: PropTypes.func.isRequired,
   getCurrentProfile: PropTypes.func.isRequired,
   profile: PropTypes.object.isRequired,
@@ -232,5 +228,5 @@ const mapStateToProps = state => ({
 });
 export default connect(
   mapStateToProps,
-  { getCurrentProfile },
-)(withRouter(CreateProfile));
+  { createProfile, getCurrentProfile },
+)(withRouter(Createprofile));
