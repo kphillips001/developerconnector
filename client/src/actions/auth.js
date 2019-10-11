@@ -9,13 +9,12 @@ import {
   LOGIN_FAIL,
   LOGOUT,
   CLEAR_PROFILE
-
 } from './types';
 import setAuthToken from '../utils/setAuthToken';
 
 // Load User
 export const loadUser = () => async dispatch => {
-  if(localStorage.token) {
+  if (localStorage.token) {
     setAuthToken(localStorage.token);
   }
 
@@ -25,7 +24,7 @@ export const loadUser = () => async dispatch => {
     dispatch({
       type: USER_LOADED,
       payload: res.data
-    })
+    });
   } catch (err) {
     dispatch({
       type: AUTH_ERROR
@@ -53,9 +52,9 @@ export const register = ({ name, email, password }) => async dispatch => {
 
     dispatch(loadUser());
   } catch (err) {
-    const errors = err.response.data.errors
+    const errors = err.response.data.errors;
 
-    if(errors) {
+    if (errors) {
       errors.forEach(error => dispatch(setAlert(error.msg, 'danger')));
     }
 
@@ -63,10 +62,9 @@ export const register = ({ name, email, password }) => async dispatch => {
       type: REGISTER_FAIL
     });
   }
-}
+};
 
 // Login User
-
 export const login = (email, password) => async dispatch => {
   const config = {
     headers: {
@@ -86,9 +84,9 @@ export const login = (email, password) => async dispatch => {
 
     dispatch(loadUser());
   } catch (err) {
-    const errors = err.response.data.errors
+    const errors = err.response.data.errors;
 
-    if(errors) {
+    if (errors) {
       errors.forEach(error => dispatch(setAlert(error.msg, 'danger')));
     }
 
@@ -97,8 +95,9 @@ export const login = (email, password) => async dispatch => {
     });
   }
 };
+
 // Logout / Clear Profile
 export const logout = () => dispatch => {
-  dispatch({ type: LOGOUT })
-  dispatch({ type: CLEAR_PROFILE })
-}
+  dispatch({ type: CLEAR_PROFILE });
+  dispatch({ type: LOGOUT });
+};

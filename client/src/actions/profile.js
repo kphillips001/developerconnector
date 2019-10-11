@@ -9,7 +9,7 @@ import {
   CLEAR_PROFILE,
   ACCOUNT_DELETED,
   GET_REPOS
-} from './types'; 
+} from './types';
 
 // Get current users profile
 export const getCurrentProfile = () => async dispatch => {
@@ -81,36 +81,35 @@ export const getGithubRepos = username => async dispatch => {
   }
 };
 
-//Create or update profile
+// Create or update profile
 export const createProfile = (
-  formData, 
-  history, 
-  edit=false
+  formData,
+  history,
+  edit = false
 ) => async dispatch => {
   try {
     const config = {
       headers: {
         'Content-Type': 'application/json'
       }
-    }
+    };
 
-    const res = await axios.post('/api/profile', formData, config); 
+    const res = await axios.post('/api/profile', formData, config);
 
     dispatch({
       type: GET_PROFILE,
       payload: res.data
     });
 
-    dispatch(setAlert(edit ? 'Profile updated' : 'Profile created', 'success')); 
+    dispatch(setAlert(edit ? 'Profile Updated' : 'Profile Created', 'success'));
 
-    if(!edit) {
+    if (!edit) {
       history.push('/dashboard');
     }
   } catch (err) {
+    const errors = err.response.data.errors;
 
-    const errors = err.response.data.errors
-
-    if(errors) {
+    if (errors) {
       errors.forEach(error => dispatch(setAlert(error.msg, 'danger')));
     }
 
